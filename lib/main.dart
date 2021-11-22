@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/localnotification',
+      initialRoute: '/homepage',
       routes: {
         '/signin': (context) => const SignInPage(),
         '/signup': (context) => const SignUpPage(),
