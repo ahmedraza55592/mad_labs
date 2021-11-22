@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:mad_labs/local_notification.dart';
 import 'package:mad_labs/screens/home_page.dart';
 import 'package:mad_labs/screens/signin_page.dart';
 import 'package:mad_labs/screens/singup_page.dart';
+import 'package:timezone/data/latest.dart' as tz;
+
+
+import 'notification_service.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  NotificationService().init();
+  tz.initializeTimeZones();  
   runApp(const MyApp());
 }
 
@@ -18,11 +26,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/signin',
+      initialRoute: '/localnotification',
       routes: {
         '/signin': (context) => const SignInPage(),
         '/signup': (context) => const SignUpPage(),
         '/homepage': (context) => const HomePage(),
+        '/localnotification': (context) => const LocalNotification(),
       },
     );
   }
