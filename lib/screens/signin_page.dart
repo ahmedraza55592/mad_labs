@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:mad_labs/utils/constants.dart';
 import 'package:mad_labs/widgets/button.dart';
 import 'package:mad_labs/widgets/text_field.dart';
 
@@ -56,8 +57,10 @@ class _SignInPageState extends State<SignInPage> {
                 height: 20.0,
               ),
               ButtonWidget(
-                onPressed: () =>
-                    Navigator.pushReplacementNamed(context, '/homepage'),
+                onPressed: () {
+                  Constants.prefs?.setBool("loggedIn", true);
+                  Navigator.pushReplacementNamed(context, '/homepage');
+                },
                 buttonText: "Sign In",
               ),
               Padding(

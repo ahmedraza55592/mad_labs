@@ -3,15 +3,17 @@ import 'package:mad_labs/local_notification.dart';
 import 'package:mad_labs/screens/home_page.dart';
 import 'package:mad_labs/screens/signin_page.dart';
 import 'package:mad_labs/screens/singup_page.dart';
+import 'package:mad_labs/utils/constants.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/data/latest.dart' as tz;
-
 
 import 'notification_service.dart';
 
-void main() {
+Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  Constants.prefs = await SharedPreferences.getInstance();
   NotificationService().init();
-  tz.initializeTimeZones();  
+  tz.initializeTimeZones();
   runApp(const MyApp());
 }
 
@@ -26,7 +28,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/homepage',
+      initialRoute: Constants.prefs?.getBool("loggedIn") == true
+          ? '/homepage'
+          : '/signin',
       routes: {
         '/signin': (context) => const SignInPage(),
         '/signup': (context) => const SignUpPage(),
@@ -36,4 +40,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
