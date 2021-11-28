@@ -1,17 +1,51 @@
 import 'package:flutter/material.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
-  void clicked(BuildContext context, String? menu) {
-    final scaffold = Scaffold.of(context);
-    scaffold.showSnackBar(SnackBar(
-      content: Text(menu!),
-      action: SnackBarAction(
-        label: 'UNDO',
-        onPressed: scaffold.hideCurrentSnackBar,
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  bool isSearching = false;
+
+  Widget _buildSearchField() {
+    return const TextField(
+      autofocus: true,
+      decoration: InputDecoration(
+        hintText: "Search Data...",
+        border: InputBorder.none,
+        hintStyle: TextStyle(color: Colors.white30),
       ),
-    ));
+      style: TextStyle(color: Colors.white, fontSize: 16.0),
+    );
+  }
+
+  List<Widget> _buildActions() {
+    if (isSearching) {
+      return <Widget>[
+        IconButton(
+          icon: const Icon(Icons.clear),
+          onPressed: () {
+            setState(() {
+              isSearching = false;
+            });
+          },
+        ),
+      ];
+    }
+
+    return <Widget>[
+      IconButton(
+        icon: const Icon(Icons.search),
+        onPressed: () {
+          setState(() {
+            isSearching = true;
+          });
+        },
+      ),
+    ];
   }
 
   @override
@@ -20,34 +54,27 @@ class HomePage extends StatelessWidget {
       appBar: PreferredSize(
           child: AppBar(
             automaticallyImplyLeading: false,
-            title: const Text("Contacts"),
-            leading: const Icon(Icons.import_contacts),
-            actions: [
-              IconButton(onPressed: () {}, icon: const Icon(Icons.message)),
-              PopupMenuButton(itemBuilder: (context) {
-                return [
-                  // PopupMenuItem(
-                  //     child: IconButton(
-                  //         onPressed: () {
-                  //           clicked(context, "Email Sent");
-                  //         },
-                  //         icon: const Icon(Icons.email))),
-                  const PopupMenuItem(child: Text("Email")),
-                  const PopupMenuItem(child: Text("Email .......")),
-                  const PopupMenuItem(child: Text("Email ....")),
-                  const PopupMenuItem(child: Text("Email......")),
-                  const PopupMenuItem(child: Icon(Icons.email, color: Colors.blue,)),
-
-                ];
-              }),
-            ],
+            title: isSearching ? _buildSearchField() : const Text("Contacts"),
+            leading: isSearching
+                ? BackButton(
+                    onPressed: () {
+                      setState(() {
+                        isSearching = false;
+                      });
+                    },
+                  )
+                : const Icon(Icons.menu),
+            actions: _buildActions(),
+            
           ),
           preferredSize: const Size.fromHeight(60.0)),
-      body: const Center(
-        child: Text(
-          "HomePage",
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30.0),
-        ),
+      body: Center(
+        child: isSearching
+            ? Container()
+            : const Text(
+                "HomePage",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30.0),
+              ),
       ),
     );
   }

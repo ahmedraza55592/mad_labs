@@ -1,9 +1,11 @@
+import 'package:flutter/widgets.dart';
+
 void main(){
   int check ;
   int number =44;
   int counter = 0;
 
-  print("Find Nth Prime Number: $number");
+  debugPrint("Find Nth Prime Number: $number");
 
   for (int i = 2; i < 1000; i++){
     check =0;
@@ -16,7 +18,7 @@ void main(){
     if(check==0){
       counter++;
         if(counter == number){
-          print("The $number Prime Number is: $i");
+          debugPrint("The $number Prime Number is: $i");
           break;
         }
     }
